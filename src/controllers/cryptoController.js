@@ -48,6 +48,15 @@ router.get('/:cryptoId/buy', async (req, res) => {
     } catch (error) {
         res.redirect('/404');
     }
+});
+
+router.get('/:cryptoId/delete', async(req,res)=>{
+    try {
+        await cryptoService.delete(req.params.cryptoId);
+        res.redirect('/crypto/catalog');
+    } catch (error) {
+        res.redirect('/404');
+    }
 })
 
 
