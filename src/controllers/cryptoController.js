@@ -66,6 +66,17 @@ router.get('/:cryptoId/edit', async (req, res) => {
     } catch (error) {
 
     }
+});
+
+router.post('/:cryptoId/edit', async(req, res) => {
+    const crypto = req.body;
+
+    try {
+        await cryptoService.edit(req.params.cryptoId, crypto);
+        res.redirect(`/crypto/${req.params.cryptoId}/details`);
+    } catch (error) {
+        res.render('crypto/edit', {error: getErrorMessage(error), crypto })
+    }
 })
 
 

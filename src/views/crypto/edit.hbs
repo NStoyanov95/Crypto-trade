@@ -4,7 +4,7 @@
         {{#if error}}
         <div>
             <div class="errorContainer">
-                <p>error</p>
+                <p>{{error}}</p>
             </div>
         </div>
         {{/if}}
@@ -23,11 +23,11 @@
                         id="description">{{crypto.cryptoDescription}}</textarea>
                     <label>Payment method:</label>
                     <select id="payment" name="paymentMethod">
-                        <option value="crypto-wallet">{{crypto.paymentMethod}}</option>
+                        <option>{{crypto.paymentMethod}}</option>
                         <option value="crypto-wallet">Crypto Wallet</option>
                         <option value="credit-card">Credit Card</option>
                         <option value="debit-card">Debit Card</option>
-                        <option value="paypal" selected>PayPal</option>
+                        <option value="paypal">PayPal</option>
                     </select>
                     <input type="submit" id="btn" value="EDIT"></input>
                 </form>
