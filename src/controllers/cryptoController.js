@@ -39,6 +39,15 @@ router.get('/:cryptoId/details', async (req, res) => {
     } catch (error) {
         res.redirect('/404');
     }
+});
+
+router.get('/:cryptoId/buy', async (req, res) => {
+    try {
+        await cryptoService.buy(req.params.cryptoId, req.user._id);
+        res.redirect(`/crypto/${req.params.cryptoId}/details`);
+    } catch (error) {
+        res.redirect('/404');
+    }
 })
 
 
