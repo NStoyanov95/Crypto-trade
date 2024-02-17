@@ -50,12 +50,21 @@ router.get('/:cryptoId/buy', async (req, res) => {
     }
 });
 
-router.get('/:cryptoId/delete', async(req,res)=>{
+router.get('/:cryptoId/delete', async (req, res) => {
     try {
         await cryptoService.delete(req.params.cryptoId);
         res.redirect('/crypto/catalog');
     } catch (error) {
         res.redirect('/404');
+    }
+});
+
+router.get('/:cryptoId/edit', async (req, res) => {
+    try {
+        const crypto = await cryptoService.getOne(req.params.cryptoId).lean();
+        res.render('crypto/edit', { crypto });
+    } catch (error) {
+
     }
 })
 
