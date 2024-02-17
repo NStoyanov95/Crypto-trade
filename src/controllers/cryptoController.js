@@ -77,7 +77,16 @@ router.post('/:cryptoId/edit', isAuth, isOwner, async (req, res) => {
     } catch (error) {
         res.render('crypto/edit', { error: getErrorMessage(error), crypto })
     }
-})
+});
+
+router.get('/search', async (req, res) => {
+    try {
+        const crypto = await cryptoService.getAll().lean();
+        res.render('crypto/search', { crypto });
+    } catch (error) {
+        res.redirect('/404')
+    }
+});
 
 
 module.exports = router;
