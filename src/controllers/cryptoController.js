@@ -3,12 +3,13 @@ const router = require('express').Router();
 const cryptoService = require('../services/cryptoService');
 
 const { getErrorMessage } = require('../utils/errorUtils');
+const { isAuth, isOwner } = require('../middlewares/authMiddleware')
 
-router.get('/create', (req, res) => {
+router.get('/create', isAuth, (req, res) => {
     res.render('crypto/create')
 });
 
-router.post('/create', async (req, res) => {
+router.post('/create', isAuth, async (req, res) => {
     const cryptoData = req.body
     cryptoData.owner = req.user._id;
     try {
@@ -41,7 +42,7 @@ router.get('/:cryptoId/details', async (req, res) => {
     }
 });
 
-router.get('/:cryptoId/buy', async (req, res) => {
+router.get('/:cryptoId/buy', isAuth, async (req, res) => {
     try {
         await cryptoService.buy(req.params.cryptoId, req.user._id);
         res.redirect(`/crypto/${req.params.cryptoId}/details`);
@@ -50,7 +51,7 @@ router.get('/:cryptoId/buy', async (req, res) => {
     }
 });
 
-router.get('/:cryptoId/delete', async (req, res) => {
+router.get('/:cryptoId/delete', isAuth, isOwner, async (req, res) => {
     try {
         await cryptoService.delete(req.params.cryptoId);
         res.redirect('/crypto/catalog');
@@ -59,7 +60,7 @@ router.get('/:cryptoId/delete', async (req, res) => {
     }
 });
 
-router.get('/:cryptoId/edit', async (req, res) => {
+router.get('/:cryptoId/edit', isAuth, isOwner, async (req, res) => {
     try {
         const crypto = await cryptoService.getOne(req.params.cryptoId).lean();
         res.render('crypto/edit', { crypto });
@@ -68,7 +69,7 @@ router.get('/:cryptoId/edit', async (req, res) => {
     }
 });
 
-router.post('/:cryptoId/edit', async (req, res) => {
+router.post('/:cryptoId/edit', isAuth, isOwner, async (req, res) => {
     const crypto = req.body;
     try {
         await cryptoService.edit(req.params.cryptoId, crypto);

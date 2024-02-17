@@ -1,6 +1,9 @@
 const jwt = require('../lib/jwt');
 const ENV = require('../utils/constants');
 
+const cryptoService = require('../services/cryptoService');
+
+
 exports.auth = async (req, res, next) => {
     const token = req.cookies['auth'];
 
@@ -31,9 +34,9 @@ exports.isAuth = (req, res, next) => {
 
 //CHANGE SERVICE, NAME AND ID
 exports.isOwner = async (req, res, next) => {
-    const CHANGE = await SERVICE.getOne(req.params.ID);
+    const crypto = await cryptoService.getOne(req.params.cryptoId);
 
-    if (CHANGE.owner == req.user?._id) {
+    if (crypto.owner == req.user?._id) {
         return next();
     }
 
@@ -42,7 +45,7 @@ exports.isOwner = async (req, res, next) => {
 
 exports.isGuest = (req, res, next) => {
     if (req.user) {
-        return res.redirect('/404')
+        return res.redirect('/404');
     }
 
     return next();
