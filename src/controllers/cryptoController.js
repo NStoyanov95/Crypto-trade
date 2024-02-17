@@ -10,6 +10,7 @@ router.get('/create', (req, res) => {
 
 router.post('/create', async (req, res) => {
     const cryptoData = req.body
+    cryptoData.owner = req.user._id;
     try {
         await cryptoService.create(cryptoData);
         res.redirect('/crypto/catalog')
@@ -23,6 +24,18 @@ router.get('/catalog', async (req, res) => {
         const crypto = await cryptoService.getAll().lean();
         res.render('crypto/catalog', { crypto });
 
+    } catch (error) {
+        res.redirect('/404');
+    }
+});
+
+router.get('/:cryptoId/details', async (req, res) => {
+    try {
+        const crypto = await cryptoService.getOne(req.params.cryptoId).populate('buyACrypto').lean();
+        const isUser = req.user;
+        const isOwner = crypto.owner == req.user?._id;
+        const isBuyer = crypto.buyACrypto.some(x => x._id == req.user?._id);
+        res.render('crypto/details', { crypto, isUser, isOwner, isBuyer })
     } catch (error) {
         res.redirect('/404');
     }
