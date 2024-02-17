@@ -7,6 +7,9 @@ const cryptoController = require('./controllers/cryptoController');
 router.use(homeController);
 router.use('/auth', authController);
 router.use('/crypto', cryptoController);
+router.get('*', (req,res)=>{
+    res.redirect('/404');
+})
 
 
 
