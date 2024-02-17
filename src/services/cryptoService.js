@@ -12,3 +12,5 @@ exports.buy = (cryptoId, userId) => Crypto.findByIdAndUpdate(cryptoId, { $push: 
 exports.delete = (cryptoId) => Crypto.findByIdAndDelete(cryptoId);
 
 exports.edit = (cryptoId, cryptoData) => Crypto.findByIdAndUpdate(cryptoId, cryptoData, { runValidators: true });
+
+exports.search = (name, paymentMethod) => Crypto.find({ name: new RegExp(name, 'i'), paymentMethod: new RegExp(paymentMethod, 'i') })
